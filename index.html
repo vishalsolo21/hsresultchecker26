@@ -1,632 +1,291 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WB 12th Board Results | ABPLive</title>
 
-  <title>WBCHSE RESULT CHECKER 2026</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-
-  <link rel="stylesheet"
-    href="https://cdn.abplive.com/exam-results/hindi/css/desktop/styles-election-2020.css?v=1.01"/>
-
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.abplive.com/exam-results/hindi/css/desktop/styles-election-2020.css?v=1.01" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.abplive.com/board-results-iframe-2020/css/register-board-results-form.css" />
   <style>
+    .board-search-form-wrapper { min-height:140px}
+    .roll_error { width: 100%; font-size:0.875rem; color: #000; line-height: 1.5; text-align: center; margin-top: 10px;}
+    .roll_error span { color: #ff0000;}
+    .hr { margin: 0;}
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Poppins',sans-serif;
-    }
+    .rs-loader {position: fixed; left: 0; top: 0;  width: 100%; height: 100%; z-index: 10; background: rgba(0,0,0,1); color: #fff; display: flex; align-items: center; flex-direction: column; font-size: 16px; padding: 30px 0; overflow: auto;}
+    .rs-loader p span {width: 1.25em; display: inline-block;}
+    .rs-loader p span:after {overflow: hidden;display: inline-block;vertical-align: bottom;-webkit-animation: ellipsis steps(4,end) 900ms infinite; animation: ellipsis steps(4,end) 900ms infinite;content: "\2026"; width: 0px;}
 
-    body{
-      min-height:100vh;
-      background:
-        radial-gradient(circle at top left, rgba(59,130,246,0.28), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(168,85,247,0.25), transparent 30%),
-        linear-gradient(135deg,#020617,#0f172a,#111827);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:20px;
-      overflow-x:hidden;
-      color:#fff;
-    }
-
-    .container{
-      width:100%;
-      max-width:560px;
-    }
-
-    .board-reg-form{
-      width:100%;
-      background:rgba(255,255,255,0.08);
-      backdrop-filter:blur(18px);
-      border:1px solid rgba(255,255,255,0.12);
-      border-radius:28px;
-      padding:28px;
-      box-shadow:0 10px 40px rgba(0,0,0,0.35);
-    }
-
-    .logo{
-      width:85px;
-      height:85px;
-      border-radius:24px;
-      background:linear-gradient(135deg,#2563eb,#7c3aed);
-      margin:auto;
-      margin-bottom:18px;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      font-size:34px;
-      font-weight:700;
-      box-shadow:0 10px 25px rgba(37,99,235,0.35);
-    }
-
-    .h4{
-      text-align:center;
-      font-size:30px;
-      font-weight:700;
-      margin-bottom:8px;
-      color:#fff;
-    }
-
-    .subtitle{
-      text-align:center;
-      color:#cbd5e1;
-      font-size:14px;
-      margin-bottom:24px;
-      line-height:1.6;
-    }
-
-    .hr{
-      display:none;
-    }
-
-    .col-12.p-0.mb-3{
-      display:flex;
-      gap:12px;
-      margin-bottom:14px !important;
-    }
-
-    .w-50{
-      width:100% !important;
-    }
-
-    input{
-      width:100%;
-      padding:15px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,0.12);
-      background:rgba(255,255,255,0.08);
-      color:#fff;
-      outline:none;
-      font-size:15px;
-      transition:0.3s;
-    }
-
-    input:focus{
-      border-color:#3b82f6;
-      box-shadow:0 0 0 4px rgba(59,130,246,0.18);
-    }
-
-    input::placeholder{
-      color:#94a3b8;
-    }
-
-    .btn-primary{
-      width:100%;
-      border:none;
-      border-radius:18px;
-      padding:15px;
-      margin-top:10px;
-      background:linear-gradient(135deg,#2563eb,#7c3aed);
-      color:#fff;
-      font-size:16px;
-      font-weight:600;
-      cursor:pointer;
-      transition:0.3s;
-      box-shadow:0 10px 25px rgba(37,99,235,0.35);
-    }
-
-    .btn-primary:hover{
-      transform:translateY(-2px);
-      opacity:0.95;
-    }
-
-    .roll_error,
-    .error{
-      margin-top:18px;
-      background:rgba(239,68,68,0.14);
-      border:1px solid rgba(239,68,68,0.22);
-      color:#fecaca;
-      padding:14px;
-      border-radius:14px;
-      text-align:center;
-      line-height:1.6;
-      display:none;
-    }
-
-    .rs-loader{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.92);
-      z-index:999;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      flex-direction:column;
-      color:#fff;
-      font-size:18px;
-    }
-
-    .d-none{
-      display:none !important;
-    }
-
-    .spinner{
-      width:60px;
-      height:60px;
-      border:4px solid rgba(255,255,255,0.2);
-      border-top-color:#fff;
-      border-radius:50%;
-      animation:spin 1s linear infinite;
-      margin-bottom:20px;
-    }
-
-    @keyframes spin{
-      to{
-        transform:rotate(360deg);
+    @keyframes ellipsis {
+      to {
+        width: 1.25em; 
       }
     }
 
-    .result-wrapper{
-      width:100%;
-      max-width:1000px;
-      margin-top:20px;
-    }
-
-    .result-table{
-      background:rgba(255,255,255,0.08);
-      backdrop-filter:blur(18px);
-      border:1px solid rgba(255,255,255,0.12);
-      border-radius:24px;
-      overflow:hidden;
-      box-shadow:0 10px 40px rgba(0,0,0,0.35);
-      padding:15px;
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      margin-bottom:20px;
-      color:#fff;
-    }
-
-    th{
-      background:rgba(255,255,255,0.08);
-      padding:14px;
-      border:1px solid rgba(255,255,255,0.08);
-      font-size:14px;
-    }
-
-    td{
-      padding:12px;
-      border:1px solid rgba(255,255,255,0.08);
-      font-size:14px;
-    }
-
-    .result-title{
-      font-size:16px;
-      font-weight:700;
-    }
-
-    #printResult{
-      float:right;
-      border:none;
-      background:linear-gradient(135deg,#2563eb,#7c3aed);
-      color:#fff;
-      padding:8px 15px;
-      border-radius:10px;
-      cursor:pointer;
-    }
-
-    .footer{
-      margin-top:20px;
-      text-align:center;
-      color:#94a3b8;
-      font-size:13px;
-    }
-
-    .disclaimer{
-      color:#cbd5e1;
-      line-height:1.6;
-    }
-
-    @media(max-width:768px){
-
-      .board-reg-form{
-        padding:22px;
+    @-webkit-keyframes ellipsis {
+      to {
+        width: 1.25em;    
       }
-
-      .h4{
-        font-size:24px;
-      }
-
-      .col-12.p-0.mb-3{
-        flex-direction:column;
-      }
-
-      .w-50{
-        margin-left:0 !important;
-      }
-
-      td,th{
-        font-size:13px;
-        padding:10px;
-      }
-
+    }
+   
+    @media screen and (max-width: 775px) {
+      .col-12.p-0.mb-3 { flex-wrap: wrap;}
+      .w-50 { width: 100% !important; margin-left: 0!important;}
     }
 
   </style>
-
 </head>
 
 <body>
+  <form class="board-reg-form board-result-form mp-result-form" action="/" id="resultForm">
+    <h4 class="h4 text-center">WB Board 12th Results</h4>
+    <hr class="hr" />
+    <div class="board-search-form-wrapper">
+      <div class="board-search-form row">
+        <div class="col-12 p-0 mb-3" style="display: flex;">
+         
+          <input class="w-50" type="text" placeholder="Roll" maxlength="6" minlength="6" name="roll" autocomplete="off" required />
+          
+          <input class="w-50" type="text" placeholder="No" maxlength="4" minlength="4" name="no" required style=" margin-left: 10px;" autocomplete="off" />
 
-  <div class="rs-loader d-none" id="loadingSpinner">
-    <div class="spinner"></div>
-    <p>Please wait for a moment...</p>
-  </div>
-
-  <div class="container">
-
-    <form class="board-reg-form" id="resultForm">
-
-      <div class="logo">HS</div>
-
-      <h4 class="h4">WBCHSE RESULT 2026</h4>
-
-      <div class="subtitle">
-        West Bengal Higher Secondary Examination Result Checker
-      </div>
-
-      <div class="board-search-form">
-
-        <div class="col-12 p-0 mb-3">
-
-          <input type="text"
-            placeholder="Roll"
-            maxlength="6"
-            minlength="6"
-            name="roll"
-            autocomplete="off"
-            required/>
-
-          <input type="text"
-            placeholder="No"
-            maxlength="4"
-            minlength="4"
-            name="no"
-            autocomplete="off"
-            required/>
+          <input class="w-50" type="text" placeholder="Registration No"  name="registration" required style=" margin-left: 10px;" autocomplete="off" />
 
         </div>
-
-        <input class="w-100"
-          type="text"
-          placeholder="Registration Number"
-          name="registration"
-          autocomplete="off"
-          required/>
-
-        <button class="btn btn-primary" type="submit">
-          Check Result
+        <button class="btn btn-primary d-inline-flex align-items-center" type="submit">
+          Search
         </button>
-
       </div>
-
       <div class="roll_error" id="rollErr"></div>
-
-      <div class="footer">
-        Made with ❤️ by Vishal
-      </div>
-
-    </form>
-
-    <div class="result-wrapper d-none" id="resultWrapper">
-
-      <div class="result-table" id="resultTable"></div>
-
-      <button class="btn btn-primary"
-        style="margin-top:20px;"
-        onclick="checkAnotherResult()">
-        Check Another Result
-      </button>
-
+      <div class="error" id="applErr"></div>
     </div>
+  </form>
+  <div class="rs-loader d-none" id="loadingSpinner" role="status" aria-hidden="true">
+    <p>Please wait for a moment<span></span></p>
+      <!-- Micro_320 -->
+      <ins class="adsbygoogle"
+          style="display:inline-block;width:320px;height:480px"
+          data-ad-client="ca-pub-7282862902545083"
+          data-ad-slot="4617958085"></ins>
 
   </div>
-
+  <div class="result-wrapper pb-3 d-none" id="resultWrapper">
+    <div class="result-table" id="resultTable"></div>
+    <button class="btn btn-primary d-block mx-auto" onclick="checkAnotherResult()">Check Another Result</button>
+  </div>
   <script>
-
-    const spinner = document.getElementById('loadingSpinner');
-
-    document.getElementById('resultForm')
-      .addEventListener('submit', function(e){
-
+    var getUrlParam = (param) => {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      return urlParams.get(param);
+    };
+    var postHeight = function () {
+      let bodyHeight = document.body.scrollHeight+100;
+      if (bodyHeight > 200) {
+        window.parent.postMessage({
+            iframeId: 'boardResultFormWB',
+            type: 'resize-iframe',
+            height: bodyHeight,
+          },
+          '*'
+        );
+      }
+    };
+    window.onload = function () {
+      postHeight();
+      const boardName = getUrlParam('board');
+      const boardClass = getUrlParam('class');
+      // document.getElementById('boardName').innerText = boardName;
+      // document.getElementById('boardClass').innerText = boardClass;
+    };
+  </script>
+  <script>
+    var spinner = document.getElementById('loadingSpinner');
+    function spinnerenable() {
+      setTimeout(function () {
+        spinner.classList.add('d-none');
+        spinner.parentElement.classList.remove('disabled');
+        spinner.parentElement.removeAttribute('disabled');
+      }, 3000);
+      //}, 0);
+    }
+    document.getElementById('resultForm').addEventListener('submit', (e) => {
       e.preventDefault();
-
+      
+      (adsbygoogle = window.adsbygoogle || []).push({});
       spinner.classList.remove('d-none');
+      spinner.parentElement.classList.add('disabled');
+      spinner.parentElement.setAttribute('disabled', 'disabled');
+      const formData = new FormData(e.target);
+      let data = Array.from(formData.entries()).reduce(
+        (memo, pair) => ({
+          ...memo,
+          [pair[0]]: pair[1],
+        }), {}
+      );
 
-      const formData = new FormData(this);
-
-      const data = Object.fromEntries(formData.entries());
-
-      const rollErr = document.getElementById('rollErr');
-
-      rollErr.style.display = 'none';
-
-      const roll = data.roll.trim();
-      const no = data.no.trim();
-      const registration = data.registration.trim();
-
-      let errors = [];
-
-      if(roll.length !== 6 || isNaN(roll)){
-        errors.push("Roll should be 6 digit numeric.");
+      data.roll = data.roll.trim();
+      data.no = data.no.trim();
+      data.registration = data.registration.trim();
+      var errors = [];
+      var applErr = document.getElementById('applErr');
+      applErr.innerHTML = '';
+      rollErr.innerHTML = '';
+      const roll = data.roll;
+      const no = data.no;
+      const registration = data.registration;
+      if (roll == '') {
+        errors.push = 'Roll is mandatory.';
+      } else if (roll.length != 6) {
+        errors.push("Roll should be 6 characters long.")
+      } else if (isNaN(roll)) {
+        errors.push("Roll should be numeric.");
       }
-
-      if(no.length !== 4 || isNaN(no)){
-        errors.push("No should be 4 digit numeric.");
+      else if (no == '') {
+        errors.push = 'No is mandatory.';
+      } else if (no.length != 4) {
+        errors.push("No should be 4 characters long.")
+      } else if (isNaN(no)) {
+        errors.push("No should be numeric.")
+      } else if (registration == '') {
+        errors.push = 'Registration is mandatory.';
+      } else if (isNaN(registration)) {
+        errors.push("registration should be numeric.")
       }
+      const rollNumber = roll+no;
+      if (errors.length > 0) {
+        spinnerenable()
+        let errorHtml = "";
+        errors.forEach(error => {
+          errorHtml += `<p class="m-0">${error}</p>`;
+        });
+        applErr.innerHTML = errorHtml;
+        return false;
+      } else {
+        //url = `https://bengali.abplive.com/wb12prod/getresult12/TBAS566709/${reg_n}`;
+        url = `https://boardresultapi.abplive.com/wb/2025/12/${rollNumber}/${registration}`;
 
-      if(registration === '' || isNaN(registration)){
-        errors.push("Registration should be numeric.");
+        fetch(url)
+          .then(function (response) {return response.json();})
+          .then(function (results) {
+            let result = '';
+            spinnerenable();
+            console.log(results);
+            if (results && typeof results.message!== 'undefined' && results.message.length > 0) {
+              rollErr.innerHTML = "It seems you have entered an invalid Roll No. or Reg. No. You may contact W.B. Council of H.S. Education (Head Office), 9/2 Block DJ,Sector-II, Salt Lake. <br>Email : <span>hsexamquery21@wbchse.org.in</span>, <br>if you are in putting your correct Roll No. as printed on the Admit Card.";
+              return;
+            } else {
+              document.getElementById('resultForm').classList.add('d-none');
+              generateResultTable(results, data);
+            }
+          })
+          .catch(function (err) {
+            console.log(err);
+            spinnerenable();
+            rollErr.innerText = 'Error! Please Retry.';
+            setTimeout(function () {location.reload();}, 5000);
+          });
       }
-
-      if(errors.length > 0){
-
-        spinner.classList.add('d-none');
-
-        rollErr.style.display = 'block';
-
-        rollErr.innerHTML = errors.join('<br>');
-
-        return;
-
-      }
-
-      const rollNumber = roll + no;
-
-      const url =
-      `https://boardresultapi.abplive.com/wb/2025/12/${rollNumber}/${registration}`;
-
-      fetch(url)
-
-      .then(response => response.json())
-
-      .then(result => {
-
-        spinner.classList.add('d-none');
-
-        console.log(result);
-
-        if(result.message){
-
-          rollErr.style.display = 'block';
-
-          rollErr.innerHTML =
-          'Invalid Roll Number or Registration Number';
-
-          return;
-
-        }
-
-        document.getElementById('resultForm')
-          .classList.add('d-none');
-
-        generateResult(result);
-
-      })
-
-      .catch(error => {
-
-        console.log(error);
-
-        spinner.classList.add('d-none');
-
-        rollErr.style.display = 'block';
-
-        rollErr.innerHTML = 'Error! Please Retry.';
-
-      });
-
     });
 
-    function generateResult(result){
-
-      let subjects = '';
-
-      for(let i=1;i<=6;i++){
-
-        if(result['sub_code'+i]){
-
-          subjects += `
-
-            <tr>
-              <td>${result['sub_code'+i]}</td>
-              <td>${result['thmarks'+i]}</td>
-              <td>${result['prmarks'+i]}</td>
-              <td>${result['totalmarks'+i]}</td>
-              <td>${result['grade'+i]}</td>
-              <td>${result['percent'+i]}</td>
-            </tr>
-
-          `;
-
-        }
-
+    function checkAnotherResult() {
+      const pagetype = getUrlParam("pagetype");
+      if (pagetype == "amp") {
+        document.getElementById('resultForm').reset();
+        document.getElementById('resultForm').classList.remove('d-none');
+        document.getElementById('resultWrapper').classList.add('d-none');
+      } else { 
+       location.reload();
+        // window.parent.postMessage({
+        //     type: 'reload-page',
+        //   },
+        //   '*'
+        // );
+        // postHeight();
       }
-
-      document.getElementById('resultWrapper')
-        .classList.remove('d-none');
-
-      document.getElementById('resultTable').innerHTML = `
-
-        <table>
-
-          <thead>
-
-            <tr>
-              <th colspan="2">
-                <span class="result-title">
-                  PERSONAL DETAILS
-                </span>
-              </th>
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            <tr>
-              <td>Candidate Name</td>
-              <td>${result.name}</td>
-            </tr>
-
-            <tr>
-              <td>Roll Number</td>
-              <td>${result.ROll_No}</td>
-            </tr>
-
-            <tr>
-              <td>Registration Number</td>
-              <td>${result.Reg_No}</td>
-            </tr>
-
-            <tr>
-              <td>Institute Code</td>
-              <td>${result.institute_code}</td>
-            </tr>
-
-          </tbody>
-
-        </table>
-
-        <table>
-
-          <thead>
-
-            <tr>
-              <th>Subject</th>
-              <th>Theory</th>
-              <th>Practical</th>
-              <th>Total</th>
-              <th>Grade</th>
-              <th>Percentile</th>
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            ${subjects}
-
-          </tbody>
-
-        </table>
-
-        <table>
-
-          <thead>
-
-            <tr>
-              <th colspan="2">
-                <span class="result-title">
-                  FINAL RESULT
-                </span>
-
-                <button id="printResult"
-                  onclick="window.print()">
-                  Print
-                </button>
-
-              </th>
-            </tr>
-
-          </thead>
-
-          <tbody>
-
-            <tr>
-              <td>Grand Total</td>
-              <td>${result.totalMarks}</td>
-            </tr>
-
-            <tr>
-              <td>Overall Grade</td>
-              <td>${result.finalGrade}</td>
-            </tr>
-
-            <tr>
-              <td>Overall Percentile</td>
-              <td>${result.totalPercent}</td>
-            </tr>
-
-            <tr>
-              <td>Status</td>
-              <td>${result.status}</td>
-            </tr>
-
-          </tbody>
-
-          <tfoot>
-
-            <tr>
-
-              <td colspan="2">
-
-                <small class="disclaimer">
-
-                  <strong>Disclaimer:</strong>
-
-                  Provisional results published online are for immediate information only and cannot be treated as original mark sheets.
-
-                </small>
-
-              </td>
-
-            </tr>
-
-          </tfoot>
-
-        </table>
-
-      `;
-
     }
 
-    function checkAnotherResult(){
+    function generateResultTable(resultString, data) {
+      let result = {};
+      result['record_type']=resultString.record_type.trim();
+      //result['roll'] = data.roll_n1;
+      //result['number'] = data.roll_n2;
+      const rollNo = resultString.ROll_No.trim();
+      result['roll'] = rollNo.substring(0, 6);
+      result['number'] = rollNo.substring(6);
+      result['institute_code'] = resultString.institute_code.trim();
+      result['name'] = resultString.name.trim();
+      result['totalMarks'] = resultString.totalMarks.trim();
+      result['finalGrade'] = resultString.finalGrade.trim();
+      result['totalPercent'] = resultString.totalPercent.trim();
+      result['status'] = resultString.status.trim();
+      result['sub'] = [];
 
-      location.reload();
-
-    }
-
-    if('caches' in window){
-
-      caches.keys().then(names => {
-
-        names.forEach(name => caches.delete(name));
-
+      for(let i = 0; i < 6; i++){
+        let j = i+1;
+        result['sub'][i] = {'sub_code': '', 'thmarks' : '', 'prmarks': '', 'totalmarks': '', 'grade': '', 'percent' : ''};
+        result['sub'][i].sub_code = resultString['sub_code'+j].trim();
+        result['sub'][i].thmarks = resultString['thmarks'+j].trim();
+        result['sub'][i].prmarks = resultString['prmarks'+j].trim();
+        result['sub'][i].totalmarks = resultString['totalmarks'+j].trim();
+        result['sub'][i].grade = resultString['grade'+j].trim();
+        result['sub'][i].percent = resultString['percent'+j].trim();
+      }
+      result['regNo'] = resultString.Reg_No.trim();
+      const boardName = 'WB Board';
+      const boardClass = '12th';
+      let personalHtml = '';
+      let marksHtml = '';
+      let finalHtml = '';
+      
+      //personalHtml = `<tr><td width="50%">Roll Number</td><td colspan="5">${result.roll} - ${result.number}</td></tr>
+      personalHtml = `<tr><td width="50%">Candidate Name</td><td colspan="5">${result.name}</td></tr>
+        <tr><td width="50%">Reg. Number</td><td colspan="5">${result.regNo}</td></tr>
+        <tr><td width="50%">Roll Number</td><td colspan="5">${result['roll']} - ${result['number']}</td></tr>
+        <tr><td width="50%">Institute Code</td><td colspan="5">${result['institute_code']}</td></tr>
+        `;
+      
+      marksHtml = `<tr><th style="font-size:14px;font-weight:bold;">Subject</th><th style="font-size:14px;font-weight:bold;">Theory Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Practical / Project Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Total Marks</th><th style="font-size:14px;font-weight:bold;">Grade</th><th style="font-size:14px;font-weight:bold;">Prov. Percentile Marks</th></tr>`;
+      result['sub'].forEach(subject => {
+        if(subject.sub_code!=""){
+          marksHtml += `
+          <tr>
+            <td width="20%">${subject.sub_code==""?"&nbsp;":subject.sub_code}</td>
+            <td>${subject.thmarks==""?"&nbsp;":subject.thmarks}</td>
+            <td>${subject.prmarks==""?"&nbsp;":subject.prmarks}</td>
+            <td>${subject.totalmarks==""?"&nbsp;":subject.totalmarks}</td>
+            <td>${subject.grade==""?"&nbsp;":subject.grade}</td>
+            <td>${subject.percent==""?"&nbsp;":subject.percent}</td>
+          </tr>`;
+        }
       });
 
+      finalHtml = `
+      <tr><td width="50%">Grand Total</td><td>${result.totalMarks}</td></tr>
+      <tr><td width="50%">Overall Grade</td><td>${result.finalGrade}</td></tr>
+      <tr><td width="50%">Overall Provisional Percentile</td><td>${result.totalPercent}</td></tr>
+      <tr><td width="50%">Status</td><td>${result.status}</td></tr>`;
+
+      const personalTable = `<table class="table" width="100%" border="1" id="marksheet"><thead><tr><th colspan="6" style="text-align:center;"><span class="result-title" style="font-size:16px;">PERSONAL DETAILS</span></th></tr></thead><tbody>${personalHtml}</tbody></table>`;
+
+      const marksTable = `<table class="table" width="100%" border="1" id="marksheet"><thead><tr><th colspan="6" style="text-align:center;"><span class="result-title" style="font-size:16px;">MARKS DETAILS</span></th></tr></thead><tbody>${marksHtml}</tbody></table>`;
+      
+      const finalTable = `<table class="table" width="100%" border="1" id="marksheet"><thead><tr><th colspan="6" style="text-align:center;"><span class="result-title" style="font-size:16px;">FINAL RESULT</span></th></tr></thead><tbody>${finalHtml}</tbody></table>`;
+
+      const resultTableHtml =
+        `<table class="table" width="100%" border="1" id="marksheet"><thead><tr><th colspan="6"><span class="result-title" style="font-size:16px;">${boardName} ${boardClass} Result</span><button class="" id="printResult" onclick="window.print();">Print</button></th></tr></thead>
+        <tbody><tr><td>${personalTable}</td></tr><tr><td>${marksTable}</td></tr><tr><td>${finalTable}</td></tr></tbody>
+        <tfoot><!--<tr><td>Note : Regulation 9(1)/9(2b) applied as per rule.</td></tr> --><tr><td><small class="disclaimer"><strong>Disclaimer: </strong>“Provisional results of Higher Secondary, 2025 have been published by WBCHSE with a view to providing immediate information to the examinees. These cannot be treated as original mark sheets. West Bengal Council of Higher Secondary Education is not responsible for any inadvertent error that might have crept in the results of Higher Secondary, 2025 being published through this Website.”</small></td></tr></tfoot></table>
+          `;
+      document.getElementById('resultWrapper').classList.remove('d-none');
+      document.getElementById('resultTable').innerHTML = resultTableHtml;
+      postHeight();
     }
-
   </script>
-
 </body>
 
 </html>
