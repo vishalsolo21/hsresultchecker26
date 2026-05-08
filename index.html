@@ -3,282 +3,348 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>WBCHSE Result Checker 2026</title>
+  <title>WBCHSE RESULT CHECKER 2026</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 
   <link rel="stylesheet"
-    href="https://cdn.abplive.com/exam-results/hindi/css/desktop/styles-election-2020.css?v=1.01" />
+    href="https://cdn.abplive.com/exam-results/hindi/css/desktop/styles-election-2020.css?v=1.01"/>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
     }
 
-    body {
-      min-height: 100vh;
+    body{
+      min-height:100vh;
       background:
-        radial-gradient(circle at top left, rgba(59, 130, 246, 0.25), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.25), transparent 30%),
-        linear-gradient(135deg, #020617, #0f172a, #111827);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      overflow-x: hidden;
+        radial-gradient(circle at top left, rgba(59,130,246,0.28), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(168,85,247,0.25), transparent 30%),
+        linear-gradient(135deg,#020617,#0f172a,#111827);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+      overflow-x:hidden;
+      color:#fff;
     }
 
-    .container {
-      width: 100%;
-      max-width: 550px;
+    .container{
+      width:100%;
+      max-width:560px;
     }
 
-    .glass-card {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 26px;
-      padding: 28px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    .board-reg-form{
+      width:100%;
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(18px);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:28px;
+      padding:28px;
+      box-shadow:0 10px 40px rgba(0,0,0,0.35);
     }
 
-    .logo {
-      width: 85px;
-      height: 85px;
-      border-radius: 24px;
-      margin: auto;
-      margin-bottom: 18px;
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 34px;
-      font-weight: 700;
-      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.4);
+    .logo{
+      width:85px;
+      height:85px;
+      border-radius:24px;
+      background:linear-gradient(135deg,#2563eb,#7c3aed);
+      margin:auto;
+      margin-bottom:18px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:34px;
+      font-weight:700;
+      box-shadow:0 10px 25px rgba(37,99,235,0.35);
     }
 
-    h1 {
-      text-align: center;
-      font-size: 30px;
-      margin-bottom: 8px;
-      font-weight: 700;
+    .h4{
+      text-align:center;
+      font-size:30px;
+      font-weight:700;
+      margin-bottom:8px;
+      color:#fff;
     }
 
-    .subtitle {
-      text-align: center;
-      color: #cbd5e1;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 28px;
+    .subtitle{
+      text-align:center;
+      color:#cbd5e1;
+      font-size:14px;
+      margin-bottom:24px;
+      line-height:1.6;
     }
 
-    .input-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
+    .hr{
+      display:none;
     }
 
-    .input-row input,
-    .full-input {
-      width: 100%;
-      padding: 15px;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.08);
-      color: white;
-      outline: none;
-      font-size: 15px;
-      transition: 0.3s;
+    .col-12.p-0.mb-3{
+      display:flex;
+      gap:12px;
+      margin-bottom:14px !important;
     }
 
-    .input-row input:focus,
-    .full-input:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+    .w-50{
+      width:100% !important;
     }
 
-    input::placeholder {
-      color: #94a3b8;
+    input{
+      width:100%;
+      padding:15px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.08);
+      color:#fff;
+      outline:none;
+      font-size:15px;
+      transition:0.3s;
     }
 
-    .submitBtn {
-      width: 100%;
-      border: none;
-      padding: 15px;
-      border-radius: 16px;
-      margin-top: 12px;
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-      color: white;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+    input:focus{
+      border-color:#3b82f6;
+      box-shadow:0 0 0 4px rgba(59,130,246,0.18);
     }
 
-    .submitBtn:hover {
-      transform: translateY(-2px);
-      opacity: 0.95;
+    input::placeholder{
+      color:#94a3b8;
     }
 
-    .loader-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 999;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+    .btn-primary{
+      width:100%;
+      border:none;
+      border-radius:18px;
+      padding:15px;
+      margin-top:10px;
+      background:linear-gradient(135deg,#2563eb,#7c3aed);
+      color:#fff;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
+      box-shadow:0 10px 25px rgba(37,99,235,0.35);
     }
 
-    .spinner {
-      width: 55px;
-      height: 55px;
-      border: 4px solid rgba(255, 255, 255, 0.2);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 18px;
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      opacity:0.95;
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
+    .roll_error,
+    .error{
+      margin-top:18px;
+      background:rgba(239,68,68,0.14);
+      border:1px solid rgba(239,68,68,0.22);
+      color:#fecaca;
+      padding:14px;
+      border-radius:14px;
+      text-align:center;
+      line-height:1.6;
+      display:none;
+    }
+
+    .rs-loader{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.92);
+      z-index:999;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      color:#fff;
+      font-size:18px;
+    }
+
+    .d-none{
+      display:none !important;
+    }
+
+    .spinner{
+      width:60px;
+      height:60px;
+      border:4px solid rgba(255,255,255,0.2);
+      border-top-color:#fff;
+      border-radius:50%;
+      animation:spin 1s linear infinite;
+      margin-bottom:20px;
+    }
+
+    @keyframes spin{
+      to{
+        transform:rotate(360deg);
       }
     }
 
-    .loader-overlay p {
-      font-size: 17px;
-      color: white;
+    .result-wrapper{
+      width:100%;
+      max-width:1000px;
+      margin-top:20px;
     }
 
-    .error {
-      margin-top: 18px;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.25);
-      color: #fecaca;
-      padding: 14px;
-      border-radius: 14px;
-      text-align: center;
-      display: none;
-      line-height: 1.6;
+    .result-table{
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(18px);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 10px 40px rgba(0,0,0,0.35);
+      padding:15px;
     }
 
-    .result-wrapper {
-      display: none;
-      margin-top: 25px;
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-bottom:20px;
+      color:#fff;
     }
 
-    .table-box {
-      overflow-x: auto;
-      margin-bottom: 18px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
+    th{
+      background:rgba(255,255,255,0.08);
+      padding:14px;
+      border:1px solid rgba(255,255,255,0.08);
+      font-size:14px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      color: white;
+    td{
+      padding:12px;
+      border:1px solid rgba(255,255,255,0.08);
+      font-size:14px;
     }
 
-    th {
-      background: rgba(255,255,255,0.08);
-      padding: 14px;
-      font-size: 15px;
+    .result-title{
+      font-size:16px;
+      font-weight:700;
     }
 
-    td {
-      padding: 12px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      font-size: 14px;
+    #printResult{
+      float:right;
+      border:none;
+      background:linear-gradient(135deg,#2563eb,#7c3aed);
+      color:#fff;
+      padding:8px 15px;
+      border-radius:10px;
+      cursor:pointer;
     }
 
-    .status-pass {
-      color: #22c55e;
-      font-weight: 600;
+    .footer{
+      margin-top:20px;
+      text-align:center;
+      color:#94a3b8;
+      font-size:13px;
     }
 
-    .footer {
-      margin-top: 20px;
-      text-align: center;
-      color: #94a3b8;
-      font-size: 13px;
+    .disclaimer{
+      color:#cbd5e1;
+      line-height:1.6;
     }
 
-    @media(max-width: 600px) {
-      .input-row {
-        flex-direction: column;
+    @media(max-width:768px){
+
+      .board-reg-form{
+        padding:22px;
       }
 
-      .glass-card {
-        padding: 22px;
+      .h4{
+        font-size:24px;
       }
 
-      h1 {
-        font-size: 25px;
+      .col-12.p-0.mb-3{
+        flex-direction:column;
       }
+
+      .w-50{
+        margin-left:0 !important;
+      }
+
+      td,th{
+        font-size:13px;
+        padding:10px;
+      }
+
     }
+
   </style>
+
 </head>
 
 <body>
 
-  <div class="loader-overlay" id="loadingSpinner">
+  <div class="rs-loader d-none" id="loadingSpinner">
     <div class="spinner"></div>
     <p>Please wait for a moment...</p>
   </div>
 
   <div class="container">
 
-    <div class="glass-card">
+    <form class="board-reg-form" id="resultForm">
 
       <div class="logo">HS</div>
 
-      <h1>WBCHSE RESULT 2026</h1>
+      <h4 class="h4">WBCHSE RESULT 2026</h4>
 
       <div class="subtitle">
         West Bengal Higher Secondary Examination Result Checker
       </div>
 
-      <form id="resultForm">
+      <div class="board-search-form">
 
-        <div class="input-row">
-          <input type="text" placeholder="Roll" maxlength="6" minlength="6" name="roll" required autocomplete="off">
+        <div class="col-12 p-0 mb-3">
 
-          <input type="text" placeholder="No" maxlength="4" minlength="4" name="no" required autocomplete="off">
+          <input type="text"
+            placeholder="Roll"
+            maxlength="6"
+            minlength="6"
+            name="roll"
+            autocomplete="off"
+            required/>
+
+          <input type="text"
+            placeholder="No"
+            maxlength="4"
+            minlength="4"
+            name="no"
+            autocomplete="off"
+            required/>
+
         </div>
 
-        <input class="full-input" type="text" placeholder="Registration Number"
-          name="registration" required autocomplete="off">
+        <input class="w-100"
+          type="text"
+          placeholder="Registration Number"
+          name="registration"
+          autocomplete="off"
+          required/>
 
-        <button type="submit" class="submitBtn">
+        <button class="btn btn-primary" type="submit">
           Check Result
         </button>
 
-      </form>
-
-      <div class="error" id="rollErr"></div>
-
-      <div class="result-wrapper" id="resultWrapper">
-        <div id="resultTable"></div>
-
-        <button class="submitBtn" onclick="checkAnotherResult()">
-          Check Another Result
-        </button>
       </div>
+
+      <div class="roll_error" id="rollErr"></div>
 
       <div class="footer">
         Made with ❤️ by Vishal
       </div>
+
+    </form>
+
+    <div class="result-wrapper d-none" id="resultWrapper">
+
+      <div class="result-table" id="resultTable"></div>
+
+      <button class="btn btn-primary"
+        style="margin-top:20px;"
+        onclick="checkAnotherResult()">
+        Check Another Result
+      </button>
 
     </div>
 
@@ -288,131 +354,143 @@
 
     const spinner = document.getElementById('loadingSpinner');
 
-    document.getElementById('resultForm').addEventListener('submit', (e) => {
+    document.getElementById('resultForm')
+      .addEventListener('submit', function(e){
 
       e.preventDefault();
 
-      spinner.style.display = 'flex';
+      spinner.classList.remove('d-none');
 
-      const formData = new FormData(e.target);
+      const formData = new FormData(this);
 
-      let data = Object.fromEntries(formData.entries());
-
-      data.roll = data.roll.trim();
-      data.no = data.no.trim();
-      data.registration = data.registration.trim();
+      const data = Object.fromEntries(formData.entries());
 
       const rollErr = document.getElementById('rollErr');
 
       rollErr.style.display = 'none';
-      rollErr.innerHTML = '';
 
-      const roll = data.roll;
-      const no = data.no;
-      const registration = data.registration;
+      const roll = data.roll.trim();
+      const no = data.no.trim();
+      const registration = data.registration.trim();
 
       let errors = [];
 
-      if (roll.length !== 6 || isNaN(roll)) {
+      if(roll.length !== 6 || isNaN(roll)){
         errors.push("Roll should be 6 digit numeric.");
       }
 
-      if (no.length !== 4 || isNaN(no)) {
+      if(no.length !== 4 || isNaN(no)){
         errors.push("No should be 4 digit numeric.");
       }
 
-      if (registration === '' || isNaN(registration)) {
+      if(registration === '' || isNaN(registration)){
         errors.push("Registration should be numeric.");
       }
 
-      if (errors.length > 0) {
+      if(errors.length > 0){
 
-        spinner.style.display = 'none';
+        spinner.classList.add('d-none');
 
         rollErr.style.display = 'block';
+
         rollErr.innerHTML = errors.join('<br>');
 
         return;
+
       }
 
       const rollNumber = roll + no;
 
       const url =
-        `https://boardresultapi.abplive.com/wb/2025/12/${rollNumber}/${registration}`;
+      `https://boardresultapi.abplive.com/wb/2025/12/${rollNumber}/${registration}`;
 
       fetch(url)
 
-        .then(response => response.json())
+      .then(response => response.json())
 
-        .then(results => {
+      .then(result => {
 
-          spinner.style.display = 'none';
+        spinner.classList.add('d-none');
 
-          console.log(results);
+        console.log(result);
 
-          if (results.message) {
-
-            rollErr.style.display = 'block';
-
-            rollErr.innerHTML =
-              `Invalid Roll Number or Registration Number.`;
-
-            return;
-          }
-
-          document.getElementById('resultForm').style.display = 'none';
-
-          generateResultTable(results);
-
-        })
-
-        .catch(err => {
-
-          console.log(err);
-
-          spinner.style.display = 'none';
+        if(result.message){
 
           rollErr.style.display = 'block';
 
-          rollErr.innerHTML = 'Error! Please Retry.';
+          rollErr.innerHTML =
+          'Invalid Roll Number or Registration Number';
 
-        });
+          return;
+
+        }
+
+        document.getElementById('resultForm')
+          .classList.add('d-none');
+
+        generateResult(result);
+
+      })
+
+      .catch(error => {
+
+        console.log(error);
+
+        spinner.classList.add('d-none');
+
+        rollErr.style.display = 'block';
+
+        rollErr.innerHTML = 'Error! Please Retry.';
+
+      });
 
     });
 
-    function generateResultTable(result) {
+    function generateResult(result){
 
-      const subjects = [];
+      let subjects = '';
 
-      for (let i = 1; i <= 6; i++) {
+      for(let i=1;i<=6;i++){
 
-        if (result['sub_code' + i]) {
+        if(result['sub_code'+i]){
 
-          subjects.push(`
+          subjects += `
+
             <tr>
-              <td>${result['sub_code' + i]}</td>
-              <td>${result['thmarks' + i]}</td>
-              <td>${result['prmarks' + i]}</td>
-              <td>${result['totalmarks' + i]}</td>
-              <td>${result['grade' + i]}</td>
-              <td>${result['percent' + i]}</td>
+              <td>${result['sub_code'+i]}</td>
+              <td>${result['thmarks'+i]}</td>
+              <td>${result['prmarks'+i]}</td>
+              <td>${result['totalmarks'+i]}</td>
+              <td>${result['grade'+i]}</td>
+              <td>${result['percent'+i]}</td>
             </tr>
-          `);
+
+          `;
 
         }
 
       }
 
-      document.getElementById('resultWrapper').style.display = 'block';
+      document.getElementById('resultWrapper')
+        .classList.remove('d-none');
 
       document.getElementById('resultTable').innerHTML = `
 
-        <div class="table-box">
-          <table>
+        <table>
+
+          <thead>
 
             <tr>
-              <th colspan="2">PERSONAL DETAILS</th>
+              <th colspan="2">
+                <span class="result-title">
+                  PERSONAL DETAILS
+                </span>
+              </th>
             </tr>
+
+          </thead>
+
+          <tbody>
 
             <tr>
               <td>Candidate Name</td>
@@ -425,7 +503,7 @@
             </tr>
 
             <tr>
-              <td>Registration No</td>
+              <td>Registration Number</td>
               <td>${result.Reg_No}</td>
             </tr>
 
@@ -434,12 +512,13 @@
               <td>${result.institute_code}</td>
             </tr>
 
-          </table>
-        </div>
+          </tbody>
 
-        <div class="table-box">
+        </table>
 
-          <table>
+        <table>
+
+          <thead>
 
             <tr>
               <th>Subject</th>
@@ -450,19 +529,37 @@
               <th>Percentile</th>
             </tr>
 
-            ${subjects.join('')}
+          </thead>
 
-          </table>
+          <tbody>
 
-        </div>
+            ${subjects}
 
-        <div class="table-box">
+          </tbody>
 
-          <table>
+        </table>
+
+        <table>
+
+          <thead>
 
             <tr>
-              <th colspan="2">FINAL RESULT</th>
+              <th colspan="2">
+                <span class="result-title">
+                  FINAL RESULT
+                </span>
+
+                <button id="printResult"
+                  onclick="window.print()">
+                  Print
+                </button>
+
+              </th>
             </tr>
+
+          </thead>
+
+          <tbody>
 
             <tr>
               <td>Grand Total</td>
@@ -481,24 +578,44 @@
 
             <tr>
               <td>Status</td>
-              <td class="status-pass">${result.status}</td>
+              <td>${result.status}</td>
             </tr>
 
-          </table>
+          </tbody>
 
-        </div>
+          <tfoot>
+
+            <tr>
+
+              <td colspan="2">
+
+                <small class="disclaimer">
+
+                  <strong>Disclaimer:</strong>
+
+                  Provisional results published online are for immediate information only and cannot be treated as original mark sheets.
+
+                </small>
+
+              </td>
+
+            </tr>
+
+          </tfoot>
+
+        </table>
 
       `;
 
     }
 
-    function checkAnotherResult() {
+    function checkAnotherResult(){
 
       location.reload();
 
     }
 
-    if ('caches' in window) {
+    if('caches' in window){
 
       caches.keys().then(names => {
 
