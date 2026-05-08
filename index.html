@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WB 12th Board Results | ABPLive</title>
+  <title>WB 12th Board Results | RaiganjLooters</title>
 
   <link rel="stylesheet" type="text/css"
     href="https://cdn.abplive.com/exam-results/hindi/css/desktop/styles-election-2020.css?v=1.01" />
@@ -211,21 +210,21 @@ button:hover,
 
 <body>
   <form class="board-reg-form board-result-form mp-result-form" action="/" id="resultForm">
-    <h4 class="h4 text-center">WB Board 12th Results</h4>
+    <h4 class="h4 text-center">WBCHSE 12TH RESULTS</h4>
     <hr class="hr" />
     <div class="board-search-form-wrapper">
       <div class="board-search-form row">
         <div class="col-12 p-0 mb-3" style="display: flex;">
          
-          <input class="w-50" type="text" placeholder="Roll" maxlength="6" minlength="6" name="roll" autocomplete="off" required />
+          <input class="w-50" type="text" placeholder="ROLL" maxlength="6" minlength="6" name="roll" autocomplete="off" required />
           
-          <input class="w-50" type="text" placeholder="No" maxlength="4" minlength="4" name="no" required style=" margin-left: 10px;" autocomplete="off" />
+          <input class="w-50" type="number" placeholder="NO" maxlength="4" minlength="4" name="no" required style=" margin-left: 10px;" autocomplete="off" />
 
-          <input class="w-50" type="text" placeholder="Registration No"  name="registration" required style=" margin-left: 10px;" autocomplete="off" />
+          <input class="w-50" type="text" placeholder="REGISTRATION NO"  name="registration" required style=" margin-left: 10px;" autocomplete="off" />
 
         </div>
         <button class="btn btn-primary d-inline-flex align-items-center" type="submit">
-          Search
+          CHECK RESULT
         </button>
       </div>
       <div class="roll_error" id="rollErr"></div>
@@ -267,8 +266,7 @@ button:hover,
       postHeight();
       const boardName = getUrlParam('board');
       const boardClass = getUrlParam('class');
-      // document.getElementById('boardName').innerText = boardName;
-      // document.getElementById('boardClass').innerText = boardClass;
+      
     };
   </script>
   <script>
@@ -279,7 +277,7 @@ button:hover,
         spinner.parentElement.classList.remove('disabled');
         spinner.parentElement.removeAttribute('disabled');
       }, 3000);
-      //}, 0);
+      
     }
     document.getElementById('resultForm').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -334,7 +332,7 @@ button:hover,
         applErr.innerHTML = errorHtml;
         return false;
       } else {
-        //url = `https://bengali.abplive.com/wb12prod/getresult12/TBAS566709/${reg_n}`;
+      
         url = `https://boardresultapi.abplive.com/wb/2025/12/${rollNumber}/${registration}`;
 
         fetch(url)
@@ -368,20 +366,14 @@ button:hover,
         document.getElementById('resultWrapper').classList.add('d-none');
       } else { 
        location.reload();
-        // window.parent.postMessage({
-        //     type: 'reload-page',
-        //   },
-        //   '*'
-        // );
-        // postHeight();
+        
       }
     }
 
     function generateResultTable(resultString, data) {
       let result = {};
       result['record_type']=resultString.record_type.trim();
-      //result['roll'] = data.roll_n1;
-      //result['number'] = data.roll_n2;
+      
       const rollNo = resultString.ROll_No.trim();
       result['roll'] = rollNo.substring(0, 6);
       result['number'] = rollNo.substring(6);
@@ -410,14 +402,14 @@ button:hover,
       let marksHtml = '';
       let finalHtml = '';
       
-      //personalHtml = `<tr><td width="50%">Roll Number</td><td colspan="5">${result.roll} - ${result.number}</td></tr>
+      
       personalHtml = `<tr><td width="50%">Candidate Name</td><td colspan="5">${result.name}</td></tr>
         <tr><td width="50%">Reg. Number</td><td colspan="5">${result.regNo}</td></tr>
         <tr><td width="50%">Roll Number</td><td colspan="5">${result['roll']} - ${result['number']}</td></tr>
         <tr><td width="50%">Institute Code</td><td colspan="5">${result['institute_code']}</td></tr>
         `;
       
-      marksHtml = `<tr><th style="font-size:14px;font-weight:bold;">Subject</th><th style="font-size:14px;font-weight:bold;">Theory Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Practical / Project Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Total Marks</th><th style="font-size:14px;font-weight:bold;">Grade</th><th style="font-size:14px;font-weight:bold;">Prov. Percentile Marks</th></tr>`;
+      marksHtml = `<tr><th style="font-size:14px;font-weight:bold;">Subject</th><th style="font-size:14px;font-weight:bold;">Theory Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Practical/Project Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Total Marks</th><th style="font-size:14px;font-weight:bold;">Grade</th><th style="font-size:14px;font-weight:bold;">Prov. Percentile Marks</th></tr>`;
       result['sub'].forEach(subject => {
         if(subject.sub_code!=""){
           marksHtml += `
