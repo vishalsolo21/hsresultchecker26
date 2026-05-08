@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>WBCHSE Result Checker 2026</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet"
+    href="https://cdn.abplive.com/exam-results/hindi/css/desktop/styles-election-2020.css?v=1.01" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.25), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.25), transparent 30%),
+        linear-gradient(135deg, #020617, #0f172a, #111827);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 550px;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 26px;
+      padding: 28px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .logo {
+      width: 85px;
+      height: 85px;
+      border-radius: 24px;
+      margin: auto;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 34px;
+      font-weight: 700;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.4);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 30px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .input-row input,
+    .full-input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      outline: none;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    .input-row input:focus,
+    .full-input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+    }
+
+    input::placeholder {
+      color: #94a3b8;
+    }
+
+    .submitBtn {
+      width: 100%;
+      border: none;
+      padding: 15px;
+      border-radius: 16px;
+      margin-top: 12px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+    }
+
+    .submitBtn:hover {
+      transform: translateY(-2px);
+      opacity: 0.95;
+    }
+
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .spinner {
+      width: 55px;
+      height: 55px;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 18px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loader-overlay p {
+      font-size: 17px;
+      color: white;
+    }
+
+    .error {
+      margin-top: 18px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: #fecaca;
+      padding: 14px;
+      border-radius: 14px;
+      text-align: center;
+      display: none;
+      line-height: 1.6;
+    }
+
+    .result-wrapper {
+      display: none;
+      margin-top: 25px;
+    }
+
+    .table-box {
+      overflow-x: auto;
+      margin-bottom: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: white;
+    }
+
+    th {
+      background: rgba(255,255,255,0.08);
+      padding: 14px;
+      font-size: 15px;
+    }
+
+    td {
+      padding: 12px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 14px;
+    }
+
+    .status-pass {
+      color: #22c55e;
+      font-weight: 600;
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    @media(max-width: 600px) {
+      .input-row {
+        flex-direction: column;
+      }
+
+      .glass-card {
+        padding: 22px;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="loader-overlay" id="loadingSpinner">
+    <div class="spinner"></div>
+    <p>Please wait for a moment...</p>
+  </div>
+
+  <div class="container">
+
+    <div class="glass-card">
+
+      <div class="logo">HS</div>
+
+      <h1>WBCHSE RESULT 2026</h1>
+
+      <div class="subtitle">
+        West Bengal Higher Secondary Examination Result Checker
+      </div>
+
+      <form id="resultForm">
+
+        <div class="input-row">
+          <input type="text" placeholder="Roll" maxlength="6" minlength="6" name="roll" required autocomplete="off">
+
+          <input type="text" placeholder="No" maxlength="4" minlength="4" name="no" required autocomplete="off">
+        </div>
+
+        <input class="full-input" type="text" placeholder="Registration Number"
+          name="registration" required autocomplete="off">
+
+        <button type="submit" class="submitBtn">
+          Check Result
+        </button>
+
+      </form>
+
+      <div class="error" id="rollErr"></div>
+
+      <div class="result-wrapper" id="resultWrapper">
+        <div id="resultTable"></div>
+
+        <button class="submitBtn" onclick="checkAnotherResult()">
+          Check Another Result
+        </button>
+      </div>
+
+      <div class="footer">
+        Made with ❤️ by Vishal
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const spinner = document.getElementById('loadingSpinner');
+
+    document.getElementById('resultForm').addEventListener('submit', (e) => {
+
+      e.preventDefault();
+
+      spinner.style.display = 'flex';
+
+      const formData = new FormData(e.target);
+
+      let data = Object.fromEntries(formData.entries());
+
+      data.roll = data.roll.trim();
+      data.no = data.no.trim();
+      data.registration = data.registration.trim();
+
+      const rollErr = document.getElementById('rollErr');
+
+      rollErr.style.display = 'none';
+      rollErr.innerHTML = '';
+
+      const roll = data.roll;
+      const no = data.no;
+      const registration = data.registration;
+
+      let errors = [];
+
+      if (roll.length !== 6 || isNaN(roll)) {
+        errors.push("Roll should be 6 digit numeric.");
+      }
+
+      if (no.length !== 4 || isNaN(no)) {
+        errors.push("No should be 4 digit numeric.");
+      }
+
+      if (registration === '' || isNaN(registration)) {
+        errors.push("Registration should be numeric.");
+      }
+
+      if (errors.length > 0) {
+
+        spinner.style.display = 'none';
+
+        rollErr.style.display = 'block';
+        rollErr.innerHTML = errors.join('<br>');
+
+        return;
+      }
+
+      const rollNumber = roll + no;
+
+      const url =
+        `https://boardresultapi.abplive.com/wb/2025/12/${rollNumber}/${registration}`;
+
+      fetch(url)
+
+        .then(response => response.json())
+
+        .then(results => {
+
+          spinner.style.display = 'none';
+
+          console.log(results);
+
+          if (results.message) {
+
+            rollErr.style.display = 'block';
+
+            rollErr.innerHTML =
+              `Invalid Roll Number or Registration Number.`;
+
+            return;
+          }
+
+          document.getElementById('resultForm').style.display = 'none';
+
+          generateResultTable(results);
+
+        })
+
+        .catch(err => {
+
+          console.log(err);
+
+          spinner.style.display = 'none';
+
+          rollErr.style.display = 'block';
+
+          rollErr.innerHTML = 'Error! Please Retry.';
+
+        });
+
+    });
+
+    function generateResultTable(result) {
+
+      const subjects = [];
+
+      for (let i = 1; i <= 6; i++) {
+
+        if (result['sub_code' + i]) {
+
+          subjects.push(`
+            <tr>
+              <td>${result['sub_code' + i]}</td>
+              <td>${result['thmarks' + i]}</td>
+              <td>${result['prmarks' + i]}</td>
+              <td>${result['totalmarks' + i]}</td>
+              <td>${result['grade' + i]}</td>
+              <td>${result['percent' + i]}</td>
+            </tr>
+          `);
+
+        }
+
+      }
+
+      document.getElementById('resultWrapper').style.display = 'block';
+
+      document.getElementById('resultTable').innerHTML = `
+
+        <div class="table-box">
+          <table>
+
+            <tr>
+              <th colspan="2">PERSONAL DETAILS</th>
+            </tr>
+
+            <tr>
+              <td>Candidate Name</td>
+              <td>${result.name}</td>
+            </tr>
+
+            <tr>
+              <td>Roll Number</td>
+              <td>${result.ROll_No}</td>
+            </tr>
+
+            <tr>
+              <td>Registration No</td>
+              <td>${result.Reg_No}</td>
+            </tr>
+
+            <tr>
+              <td>Institute Code</td>
+              <td>${result.institute_code}</td>
+            </tr>
+
+          </table>
+        </div>
+
+        <div class="table-box">
+
+          <table>
+
+            <tr>
+              <th>Subject</th>
+              <th>Theory</th>
+              <th>Practical</th>
+              <th>Total</th>
+              <th>Grade</th>
+              <th>Percentile</th>
+            </tr>
+
+            ${subjects.join('')}
+
+          </table>
+
+        </div>
+
+        <div class="table-box">
+
+          <table>
+
+            <tr>
+              <th colspan="2">FINAL RESULT</th>
+            </tr>
+
+            <tr>
+              <td>Grand Total</td>
+              <td>${result.totalMarks}</td>
+            </tr>
+
+            <tr>
+              <td>Overall Grade</td>
+              <td>${result.finalGrade}</td>
+            </tr>
+
+            <tr>
+              <td>Overall Percentile</td>
+              <td>${result.totalPercent}</td>
+            </tr>
+
+            <tr>
+              <td>Status</td>
+              <td class="status-pass">${result.status}</td>
+            </tr>
+
+          </table>
+
+        </div>
+
+      `;
+
+    }
+
+    function checkAnotherResult() {
+
+      location.reload();
+
+    }
+
+    if ('caches' in window) {
+
+      caches.keys().then(names => {
+
+        names.forEach(name => caches.delete(name));
+
+      });
+
+    }
+
+  </script>
+
+</body>
+
+</html>
