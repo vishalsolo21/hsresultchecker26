@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.abplive.com/board-results-iframe-2020/css/register-board-results-form.css" />
   <style>
     .board-search-form-wrapper { min-height:140px}
-    .roll_error { width: 100%; font-size:0.875rem; color: #000; line-height: 1.5; text-align: center; margin-top: 10px;}
+    .roll_error { width: 100%; font-size:0.875rem; color: red; line-height: 1.5; text-align: center; margin-top: 10px;}
     .roll_error span { color: #ff0000;}
     .hr { margin: 0;}
 
@@ -352,7 +352,7 @@ button:hover,
           .catch(function (err) {
             console.log(err);
             spinnerenable();
-            rollErr.innerText = 'Error! Please Retry.';
+            rollErr.innerText = 'NOT PUBLISHED YET';
             setTimeout(function () {location.reload();}, 5000);
           });
       }
