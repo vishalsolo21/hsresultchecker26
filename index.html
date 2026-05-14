@@ -242,7 +242,7 @@ button:hover,
           data-ad-slot="4617958085"></ins>
 
   </div>
-  <div class="result-wrapper pb-3 d-none" id="resultWrapper">
+         <div class="result-wrapper pb-3 d-none" id="resultWrapper">
     <div class="result-table" id="resultTable"></div>
     <button class="btn btn-primary d-block mx-auto" onclick="checkAnotherResult()">Check Another Result</button>
   </div>
@@ -268,7 +268,8 @@ button:hover,
       postHeight();
       const boardName = getUrlParam('board');
       const boardClass = getUrlParam('class');
-      
+      // document.getElementById('boardName').innerText = boardName;
+      // document.getElementById('boardClass').innerText = boardClass;
     };
   </script>
   <script>
@@ -279,7 +280,7 @@ button:hover,
         spinner.parentElement.classList.remove('disabled');
         spinner.parentElement.removeAttribute('disabled');
       }, 3000);
-      
+      //}, 0);
     }
     document.getElementById('resultForm').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -314,11 +315,11 @@ button:hover,
         errors.push("Roll should be numeric.");
       }
       else if (no == '') {
-        errors.push = 'No. is mandatory.';
+        errors.push = 'No is mandatory.';
       } else if (no.length != 4) {
-        errors.push("No. should be 4 characters long.")
+        errors.push("No should be 4 characters long.")
       } else if (isNaN(no)) {
-        errors.push("No. should be numeric.")
+        errors.push("No should be numeric.")
       } else if (registration == '') {
         errors.push = 'Registration is mandatory.';
       } else if (isNaN(registration)) {
@@ -334,7 +335,7 @@ button:hover,
         applErr.innerHTML = errorHtml;
         return false;
       } else {
-      
+        //url = `https://bengali.abplive.com/wb12prod/getresult12/TBAS566709/${reg_n}`;
         url = `https://boardresultapi.abplive.com/wb/2026/12/${rollNumber}/${registration}`;
 
         fetch(url)
@@ -354,7 +355,7 @@ button:hover,
           .catch(function (err) {
             console.log(err);
             spinnerenable();
-            rollErr.innerText = 'NOT PUBLISHED YET';
+            rollErr.innerText = 'Error! Please Retry.';
             setTimeout(function () {location.reload();}, 5000);
           });
       }
@@ -368,14 +369,20 @@ button:hover,
         document.getElementById('resultWrapper').classList.add('d-none');
       } else { 
        location.reload();
-        
+        // window.parent.postMessage({
+        //     type: 'reload-page',
+        //   },
+        //   '*'
+        // );
+        // postHeight();
       }
     }
 
     function generateResultTable(resultString, data) {
       let result = {};
       result['record_type']=resultString.record_type.trim();
-      
+      //result['roll'] = data.roll_n1;
+      //result['number'] = data.roll_n2;
       const rollNo = resultString.ROll_No.trim();
       result['roll'] = rollNo.substring(0, 6);
       result['number'] = rollNo.substring(6);
@@ -404,14 +411,14 @@ button:hover,
       let marksHtml = '';
       let finalHtml = '';
       
-      
+      //personalHtml = `<tr><td width="50%">Roll Number</td><td colspan="5">${result.roll} - ${result.number}</td></tr>
       personalHtml = `<tr><td width="50%">Candidate Name</td><td colspan="5">${result.name}</td></tr>
         <tr><td width="50%">Reg. Number</td><td colspan="5">${result.regNo}</td></tr>
         <tr><td width="50%">Roll Number</td><td colspan="5">${result['roll']} - ${result['number']}</td></tr>
         <tr><td width="50%">Institute Code</td><td colspan="5">${result['institute_code']}</td></tr>
         `;
       
-      marksHtml = `<tr><th style="font-size:14px;font-weight:bold;">Subject</th><th style="font-size:14px;font-weight:bold;">Theory Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Practical/Project Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Total Marks</th><th style="font-size:14px;font-weight:bold;">Grade</th><th style="font-size:14px;font-weight:bold;">Prov. Percentile Marks</th></tr>`;
+      marksHtml = `<tr><th style="font-size:14px;font-weight:bold;">Subject</th><th style="font-size:14px;font-weight:bold;">Theory Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Practical / Project Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Total Marks</th><th style="font-size:14px;font-weight:bold;">Grade</th><th style="font-size:14px;font-weight:bold;">Prov. Percentile Marks</th></tr>`;
       result['sub'].forEach(subject => {
         if(subject.sub_code!=""){
           marksHtml += `
@@ -441,13 +448,13 @@ button:hover,
       const resultTableHtml =
         `<table class="table" width="100%" border="1" id="marksheet"><thead><tr><th colspan="6"><span class="result-title" style="font-size:16px;">${boardName} ${boardClass} Result</span><button class="" id="printResult" onclick="window.print();">Print</button></th></tr></thead>
         <tbody><tr><td>${personalTable}</td></tr><tr><td>${marksTable}</td></tr><tr><td>${finalTable}</td></tr></tbody>
-        <tfoot><!--<tr><td>Note : Regulation 9(1)/9(2b) applied as per rule.</td></tr> --><tr><td><small class="disclaimer"><strong>Disclaimer: </strong>“Provisional results of Higher Secondary, 2026 have been published by WBCHSE with a view to providing immediate information to the examinees. These cannot be treated as original mark sheets. Neither RAIGANJLOOTERS nor WBCHSE is responsible for any inadvertent error that might have crept in the results of Higher Secondary, 2026 being published through this Website.”</small></td></tr></tfoot></table>
+        <tfoot><!--<tr><td>Note : Regulation 9(1)/9(2b) applied as per rule.</td></tr> --><tr><td><small class="disclaimer"><strong>Disclaimer: </strong>“Provisional results of Higher Secondary, 2025 have been published by WBCHSE with a view to providing immediate information to the examinees. These cannot be treated as original mark sheets. West Bengal Council of Higher Secondary Education is not responsible for any inadvertent error that might have crept in the results of Higher Secondary, 2025 being published through this Website.”</small></td></tr></tfoot></table>
           `;
       document.getElementById('resultWrapper').classList.remove('d-none');
       document.getElementById('resultTable').innerHTML = resultTableHtml;
       postHeight();
     }
-  </script>
+  </script>         
   <div class="footer">
       Made with ❤️ by Vishal | <span class="brand">RAIGANJLOOTERS</span>
   </div>
