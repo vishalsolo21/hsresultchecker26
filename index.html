@@ -242,7 +242,7 @@ button:hover,
           data-ad-slot="4617958085"></ins>
 
   </div>
-         <div class="result-wrapper pb-3 d-none" id="resultWrapper">
+    <div class="result-wrapper pb-3 d-none" id="resultWrapper">
     <div class="result-table" id="resultTable"></div>
     <button class="btn btn-primary d-block mx-auto" onclick="checkAnotherResult()">Check Another Result</button>
   </div>
@@ -297,9 +297,9 @@ button:hover,
         }), {}
       );
 
-      data.roll = data.roll.trim();
-      data.no = data.no.trim();
-      data.registration = data.registration.trim();
+      data.roll = data.roll;
+      data.no = data.no;
+      data.registration = data.registration;
       var errors = [];
       var applErr = document.getElementById('applErr');
       applErr.innerHTML = '';
@@ -336,20 +336,29 @@ button:hover,
         return false;
       } else {
         //url = `https://bengali.abplive.com/wb12prod/getresult12/TBAS566709/${reg_n}`;
-        url = `https://boardresultapi.abplive.com/wb/2026/12/${rollNumber}/${registration}`;
+        url = `https://boardresultapi.abplive.com/wb/2026/12/${rollNumber}`;
 
         fetch(url)
           .then(function (response) {return response.json();})
           .then(function (results) {
             let result = '';
             spinnerenable();
-            console.log(results);
+            
             if (results && typeof results.message!== 'undefined' && results.message.length > 0) {
               rollErr.innerHTML = "It seems you have entered an invalid Roll No. or Reg. No. You may contact W.B. Council of H.S. Education (Head Office), 9/2 Block DJ,Sector-II, Salt Lake. <br>Email : <span>hsexamquery21@wbchse.org.in</span>, <br>if you are in putting your correct Roll No. as printed on the Admit Card.";
               return;
             } else {
               document.getElementById('resultForm').classList.add('d-none');
-              generateResultTable(results, data);
+            //   generateResultTable(results, data);
+               const type_format = results.display_format || 'old';
+              
+               if (type_format == 'new') {
+                  generateResultTableNew(results, results);
+               } else {
+                    const normalized = normalizeResultData(results);
+                    generateResultTable(normalized, data);
+               }
+            
             }
           })
           .catch(function (err) {
@@ -378,83 +387,391 @@ button:hover,
       }
     }
 
-    function generateResultTable(resultString, data) {
-      let result = {};
-      result['record_type']=resultString.record_type.trim();
-      //result['roll'] = data.roll_n1;
-      //result['number'] = data.roll_n2;
-      const rollNo = resultString.ROll_No.trim();
-      result['roll'] = rollNo.substring(0, 6);
-      result['number'] = rollNo.substring(6);
-      result['institute_code'] = resultString.institute_code.trim();
-      result['name'] = resultString.name.trim();
-      result['totalMarks'] = resultString.totalMarks.trim();
-      result['finalGrade'] = resultString.finalGrade.trim();
-      result['totalPercent'] = resultString.totalPercent.trim();
-      result['status'] = resultString.status.trim();
-      result['sub'] = [];
 
-      for(let i = 0; i < 6; i++){
-        let j = i+1;
-        result['sub'][i] = {'sub_code': '', 'thmarks' : '', 'prmarks': '', 'totalmarks': '', 'grade': '', 'percent' : ''};
-        result['sub'][i].sub_code = resultString['sub_code'+j].trim();
-        result['sub'][i].thmarks = resultString['thmarks'+j].trim();
-        result['sub'][i].prmarks = resultString['prmarks'+j].trim();
-        result['sub'][i].totalmarks = resultString['totalmarks'+j].trim();
-        result['sub'][i].grade = resultString['grade'+j].trim();
-        result['sub'][i].percent = resultString['percent'+j].trim();
-      }
-      result['regNo'] = resultString.Reg_No.trim();
-      const boardName = 'WB Board';
-      const boardClass = '12th';
-      let personalHtml = '';
-      let marksHtml = '';
-      let finalHtml = '';
-      
-      //personalHtml = `<tr><td width="50%">Roll Number</td><td colspan="5">${result.roll} - ${result.number}</td></tr>
-      personalHtml = `<tr><td width="50%">Candidate Name</td><td colspan="5">${result.name}</td></tr>
-        <tr><td width="50%">Reg. Number</td><td colspan="5">${result.regNo}</td></tr>
-        <tr><td width="50%">Roll Number</td><td colspan="5">${result['roll']} - ${result['number']}</td></tr>
-        <tr><td width="50%">Institute Code</td><td colspan="5">${result['institute_code']}</td></tr>
-        `;
-      
-      marksHtml = `<tr><th style="font-size:14px;font-weight:bold;">Subject</th><th style="font-size:14px;font-weight:bold;">Theory Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Practical / Project Marks with Grade</th><th style="font-size:14px;font-weight:bold;">Total Marks</th><th style="font-size:14px;font-weight:bold;">Grade</th><th style="font-size:14px;font-weight:bold;">Prov. Percentile Marks</th></tr>`;
-      result['sub'].forEach(subject => {
-        if(subject.sub_code!=""){
-          marksHtml += `
+   function normalizeResultData(data) {
+
+    return {
+
+        marksheet_no: data.MARKSHEET_NO || '',
+        roll_no: data.ROLL || '',
+        institute_code: data.INSTITUTION_CODE || '',
+        name: data.STUDENT_NAME || '',
+        reg_no: data.REGISTRATION_NO || '',
+        totalMarks: data.TOTAL_MARKS || '',
+        totalPercent: data.TOTAL_PERCENTILE || '',
+        finalGrade: data.OVERALL_GRADE || '',
+        status: data.RESULT || '',
+        exam_year: data.EXAM_YEAR || '',
+
+        subjects: [
+
+            {
+                type: 'Language-A',
+                code: data.LANG1_CODE || '',
+                theory: data.LANG1_THEO_MARKS || '',
+                practical: data.LANG1_PRAC_MARKS || '',
+                total: data.LANG1_TOTAL_MARKS || '',
+                percent: data.LANG1_PERCENTILE || '',
+                grade: ''
+            },
+
+            {
+                type: 'Language-B',
+                code: data.LANG2_CODE || '',
+                theory: data.LANG2_THEO_MARKS || '',
+                practical: data.LANG2_PRAC_MARKS || '',
+                total: data.LANG2_TOTAL_MARKS || '',
+                percent: data.LANG2_PERCENTILE || '',
+                grade: ''
+            },
+
+            {
+                type: 'Elective-1',
+                code: data.ELEC1_CODE || '',
+                theory: data.ELEC1_THEO_MARKS || '',
+                practical: data.ELEC1_PRAC_MARKS || '',
+                total: data.ELEC1_TOTAL_MARKS || '',
+                percent: data.ELEC1_PERCENTILE || '',
+                grade: ''
+            },
+
+            {
+                type: 'Elective-2',
+                code: data.ELEC2_CODE || '',
+                theory: data.ELEC2_THEO_MARKS || '',
+                practical: data.ELEC2_PRAC_MARKS || '',
+                total: data.ELEC2_TOTAL_MARKS || '',
+                percent: data.ELEC2_PERCENTILE || '',
+                grade: ''
+            },
+
+            {
+                type: 'Elective-3',
+                code: data.ELEC3_CODE || '',
+                theory: data.ELEC3_THEO_MARKS || '',
+                practical: data.ELEC3_PRAC_MARKS || '',
+                total: data.ELEC3_TOTAL_MARKS || '',
+                percent: data.ELEC3_PERCENTILE || '',
+                grade: ''
+            },
+
+            {
+                type: 'Optional',
+                code: data.OPTIONAL_CODE || '',
+                theory: data.OPTIONAL_THEO_MARKS || '',
+                practical: data.OPTIONAL_PRAC_MARKS || '',
+                total: data.OPTIONAL_TOTAL_MARKS || '',
+                percent: data.OPTIONAL_PERCENTILE || '',
+                grade: ''
+            }
+
+        ]
+
+    };
+
+}
+
+    function generateResultTable(result) {
+
+      let subjectRows = '';
+
+      result.subjects.forEach(subject => {
+
+        if (subject.code != '') {
+
+          subjectRows += `
+          
           <tr>
-            <td width="20%">${subject.sub_code==""?"&nbsp;":subject.sub_code}</td>
-            <td>${subject.thmarks==""?"&nbsp;":subject.thmarks}</td>
-            <td>${subject.prmarks==""?"&nbsp;":subject.prmarks}</td>
-            <td>${subject.totalmarks==""?"&nbsp;":subject.totalmarks}</td>
-            <td>${subject.grade==""?"&nbsp;":subject.grade}</td>
-            <td>${subject.percent==""?"&nbsp;":subject.percent}</td>
-          </tr>`;
+
+            <td>${subject.type}</td>
+            <td>${subject.code}</td>
+            <td>${subject.theory}</td>
+            <td>${subject.practical}</td>
+            <td>${subject.total}</td>
+            <td>${subject.percent}</td>
+            <td>${subject.grade}</td>
+
+          </tr>
+          
+          `;
+
         }
+
       });
 
-      finalHtml = `
-      <tr><td width="50%">Grand Total</td><td>${result.totalMarks}</td></tr>
-      <tr><td width="50%">Overall Grade</td><td>${result.finalGrade}</td></tr>
-      <tr><td width="50%">Overall Provisional Percentile</td><td>${result.totalPercent}</td></tr>
-      <tr><td width="50%">Status</td><td>${result.status}</td></tr>`;
+      const resultTableHtml = `
 
-      const personalTable = `<table class="table" width="100%" border="1" id="marksheet"><thead><tr><th colspan="6" style="text-align:center;"><span class="result-title" style="font-size:16px;">PERSONAL DETAILS</span></th></tr></thead><tbody>${personalHtml}</tbody></table>`;
+      <table class="table" width="100%" border="1">
 
-      const marksTable = `<table class="table" width="100%" border="1" id="marksheet"><thead><tr><th colspan="6" style="text-align:center;"><span class="result-title" style="font-size:16px;">MARKS DETAILS</span></th></tr></thead><tbody>${marksHtml}</tbody></table>`;
-      
-      const finalTable = `<table class="table" width="100%" border="1" id="marksheet"><thead><tr><th colspan="6" style="text-align:center;"><span class="result-title" style="font-size:16px;">FINAL RESULT</span></th></tr></thead><tbody>${finalHtml}</tbody></table>`;
+        <thead>
 
-      const resultTableHtml =
-        `<table class="table" width="100%" border="1" id="marksheet"><thead><tr><th colspan="6"><span class="result-title" style="font-size:16px;">${boardName} ${boardClass} Result</span><button class="" id="printResult" onclick="window.print();">Print</button></th></tr></thead>
-        <tbody><tr><td>${personalTable}</td></tr><tr><td>${marksTable}</td></tr><tr><td>${finalTable}</td></tr></tbody>
-        <tfoot><!--<tr><td>Note : Regulation 9(1)/9(2b) applied as per rule.</td></tr> --><tr><td><small class="disclaimer"><strong>Disclaimer: </strong>“Provisional results of Higher Secondary, 2025 have been published by WBCHSE with a view to providing immediate information to the examinees. These cannot be treated as original mark sheets. West Bengal Council of Higher Secondary Education is not responsible for any inadvertent error that might have crept in the results of Higher Secondary, 2025 being published through this Website.”</small></td></tr></tfoot></table>
-          `;
+          <tr>
+
+            <th colspan="7">
+
+              <span class="result-title" style="font-size:16px;">
+                WB Board 12th Result
+              </span>
+
+              <button onclick="window.print();" style="float:right;">
+                Print
+              </button>
+
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr>
+            <td colspan="7">
+
+              <table class="table" width="100%" border="1">
+
+                <tr>
+                  <td width="50%">Candidate Name</td>
+                  <td>${result.name}</td>
+                </tr>
+
+                <tr>
+                  <td>Registration No</td>
+                  <td>${result.reg_no}</td>
+                </tr>
+
+                <tr>
+                  <td>Roll Number</td>
+                  <td>${result.roll_no}</td>
+                </tr>
+
+                <tr>
+                  <td>Institute Code</td>
+                  <td>${result.institute_code}</td>
+                </tr>
+
+                <tr>
+                  <td>Marksheet No</td>
+                  <td>${result.marksheet_no}</td>
+                </tr>
+
+              </table>
+
+            </td>
+          </tr>
+
+          <tr>
+
+            <td colspan="7">
+
+              <table class="table" width="100%" border="1">
+
+                <thead>
+
+                  <tr>
+
+                    <th>Type</th>
+                    <th>Subject Code</th>
+                    <th>Theory</th>
+                    <th>Practical</th>
+                    <th>Total Marks</th>
+                    <th>Provisional Percentile</th>
+                    <th>Grade</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody>
+
+                  ${subjectRows}
+
+                </tbody>
+
+              </table>
+
+            </td>
+
+          </tr>
+
+          <tr>
+
+            <td colspan="7">
+
+              <table class="table" width="100%" border="1">
+
+                <tr>
+                  <td width="50%">Marks Obtained</td>
+                  <td>${result.totalMarks}</td>
+                </tr>
+
+                <tr>
+                  <td>Overall Percentile</td>
+                  <td>${result.totalPercent}</td>
+                </tr>
+
+                <tr>
+                  <td>Final Grade</td>
+                  <td>${result.finalGrade}</td>
+                </tr>
+
+                <tr>
+                  <td>Result Status</td>
+                  <td>${result.status}</td>
+                </tr>
+
+              </table>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+        <tfoot>
+
+          <tr>
+
+            <td colspan="7">
+
+              <small class="disclaimer">
+
+                <strong>Disclaimer:</strong>
+
+                This is a provisional marksheet generated for immediate information only.
+
+              </small>
+
+            </td>
+
+          </tr>
+
+        </tfoot>
+
+      </table>
+
+      `;
+
       document.getElementById('resultWrapper').classList.remove('d-none');
+
       document.getElementById('resultTable').innerHTML = resultTableHtml;
-      postHeight();
+
     }
-  </script>         
+
+
+/* ================= HELPER ================= */
+function val(v){ return v && v !== "" ? v : "&nbsp;"; }
+
+function buildRow(d, key){
+  return `
+  <tr>
+    <td>${val(d[`${key}_CODE`])}</td>
+
+    <td>${val(d[`${key}_SEM3_FULL_MARKS`])}</td>
+    <td>${val(d[`${key}_SEM3_PASS_MARKS`])}</td>
+    <td>${val(d[`${key}_SEM3_OBTNMARKS`])}</td>
+
+    <td>${val(d[`${key}_THEO_FULL_MARKS`])}</td>
+    <td>${val(d[`${key}_THEO_PASS_MARKS`])}</td>
+    <td>${val(d[`${key}_THEO_OBTNMARKS`])}</td>
+
+    <td>${val(d[`${key}_PRAC_FULL_MARKS`])}</td>
+    <td>${val(d[`${key}_PRAC_PASS_MARKS`])}</td>
+    <td>${val(d[`${key}_PRAC_OBTNMARKS`])}</td>
+
+    <td>100</td>
+    <td>${val(d[`${key}_TOTAL_MARKS`])}</td>
+
+    <td>${val(d[`${key}_OVERALL_GRD`])}</td>
+    <td>${val(d[`${key}_PERCENTILE`])}</td>
+  </tr>
+  `;
+}
+
+
+/* ================= NEW UI ================= */
+function generateResultTableNew(data){
+
+  const html = `
+  <div class="marksheet-new">
+ <button onclick="window.print();" style="float:right; background-color: #007bff; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                Print
+              </button>
+    <h3 style="text-align:center;">MARK SHEET OF HIGHER SECONDARY EXAMINATION, 2026</h3>
+    <p style="text-align:center;">Marks, Grade and Provisional Percentile obtained by the Candidate</p>
+
+    <table width="100%" border="1" cellpadding="5">
+
+      <tr><td width="30%">Name</td><td>${val(data.CANDIDATE_NAME)}</td></tr>
+      <tr><td>Father/Mother</td><td>${val(data.CANDIDATE_GUARDIAN_NAME)}</td></tr>
+      <tr><td>Registration No.</td><td>${val(data.REGISTRATION_NO)}</td></tr>
+      <tr><td>Date of Birth</td><td>${val(data.DATE_OF_BIRTH)}</td></tr>
+      <tr><td>Institution</td><td>${val(data.INSTI_NAME_CD)}</td></tr>
+
+    </table>
+
+    <br/>
+
+    <table width="100%" border="1" cellpadding="5">
+
+      <tr>
+        <th rowspan="2">Subject Code</th>
+        <th colspan="3">Semester-III</th>
+        <th colspan="3">Semester-IV</th>
+        <th colspan="3">Practical</th>
+        <th colspan="2">Total</th>
+        <th rowspan="2">Grade</th>
+        <th rowspan="2">Provisional Percentile</th>
+      </tr>
+
+      <tr>
+        <th>Full Marks</th><th>Pass Marks</th><th>Obtained Marks</th>
+        <th>Full Marks</th><th>Pass Marks</th><th>Obtained Marks</th>
+        <th>Full Marks</th><th>Pass Marks</th><th>Obtained Marks</th>
+        <th>Full Marks</th><th>Obtained Marks</th>
+      </tr>
+
+      <tr><td colspan="14"><b>Compulsory Language Subjects</b></td></tr>
+      ${buildRow(data,'LANG_1')}
+      ${buildRow(data,'LANG_2')}
+
+      <tr><td colspan="14"><b>Compulsory Elective Subjects</b></td></tr>
+      ${buildRow(data,'ELEC_1')}
+      ${buildRow(data,'ELEC_2')}
+      ${buildRow(data,'ELEC_3')}
+
+      <tr><td colspan="14"><b>Optional Elective Subject</b></td></tr>
+      ${buildRow(data,'OPTNL_ELEC')}
+
+      <tr>
+        <td colspan="14">
+          Aggregate Marks: ${val(data.GRAND_TOTAL)} |
+          Grade: ${val(data.OVERALL_GRADE)} |
+          Provisional Percentile: ${val(data.OVERALL_PERCENTILE)}
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="14"><b>Result: ${val(data.RESULT)}</b></td>
+      </tr>
+
+    </table>
+     <small class="disclaimer">
+
+        <strong>Disclaimer:</strong>
+
+        This is a provisional marksheet generated for immediate information only.
+
+      </small>
+  </div>
+  `;
+
+  document.getElementById('resultWrapper').classList.remove('d-none');
+  document.getElementById('resultTable').innerHTML = html;
+}
+
+
+  </script>                              
   <div class="footer">
       Made with ❤️ by Vishal | <span class="brand">RAIGANJLOOTERS</span>
   </div>
